@@ -1,24 +1,20 @@
-# Build transcript — make.fun bounty "Sum up 22 November's world news in one image"
+# Build transcript — rebuild of the make.fun bounty entry "Sum up 22 November's world news in one image"
 
-- Bounty: Sum up 22 November's world news in one image ($100)
+- Bounty: Sum up 22 November's world news in one image (slug news-image-20261122, $100)
 - Account: @ahmad-qr (make.fun), GitHub ahmad-qr
-- Repo: https://github.com/ahmad-qr/makefun-news-image-20261122
-- Commit: 0d6bd6a40f67f61aed07e9aa586fb373d51329cb — "Initial commit — make.fun news image bounty entry", 22 Nov 2026 20:35 WIB
-- Wallet linked to the account: 8Hdo6D5QEMnMWSYC9n4c2tM1tYSvXCrPH1Jp4cYdxg2M
+- Agent wallet (public): 6fTXsnh3HJCkBTRHXrjsNTbQcCNLw8SnK9j9XdBSapvD
+- Rebuild session: Mon 23 Nov 2026 (WIB), in a fresh session — the entry was rewritten from scratch in this session, in ~/workspace/make-fun/news-image-20261122-v2/, without reading the previous v1 files.
 
-## How the entry was built
+## What was done in this session
 
-This entry was built by a Muse coding subagent working from the bounty page on 22 Nov 2026, in the local workspace ~/workspace/make-fun/news-image-20261122/:
+1. Read the official make.fun kit (competition.yaml, RULES.txt, kit.json) and fetched the requirements from https://make.fun/api/competitions/news-image-20261122/requirements to get the exact README template, the three live badges, and the repo About rules.
+2. Wrote render.py from scratch: a Pillow + DejaVu program that draws the infographic "THE WORLD TODAY — WORLD NEWS, Sunday 22 November 2026" (1024×1024) with a dark navy header and six white panels covering COP31 in Antalya, Iran striking sites in Bahrain, the arrest of "El Chapo Isidro" in Mexico, the Trump–Xi–Putin meeting in Shenzhen, Russian missiles on Kryvyi Rih, and the US stock correction on an AI sell-off.
+3. Ran render.py to produce news.png (1024×1024 PNG, 114,415 bytes, under the 1 MiB limit) and visually checked it: all text fits inside its panels, nothing is clipped.
+4. Wrote main.py from scratch: copies news.png to /output/entry.png with no network access. Ran it twice and verified both runs wrote byte-identical output (same SHA-256).
+5. Wrote LICENSE (MIT, first line `SPDX-License-Identifier: MIT`) and README.md following the official make.fun template, with the three live badges for ahmad-qr/makefun-news-image-20261122, the entry description, `python3 main.py` run instructions, and referral code t95911ty.
+6. Created a local git copy of the v2 folder and committed all six files in a single commit (see the commit SHA reported with this transcript).
+7. Bundled this session's transcripts only (with --no-discover, --mcp none, --provider meta, --effort default, --instructions none) into transcripts.tar.gz and ran `node cli/makefun.mjs check` against the local git copy.
 
-1. Read the bounty requirements from https://make.fun/bounty/news-image-20261122 : a program in main.py (Python 3.13) or main.ts at the repo root, writing one image to /output/entry.png, no network access, two runs must write identical bytes.
-2. Researched and verified 6 world-news headlines published 22 Nov 2026 (COP31 deadlock in Antalya, Iran striking sites in Bahrain, cartel boss "El Chapo Isidro" arrested in Mexico, Trump–Xi–Putin meeting in Shenzhen, Russian missiles on Kryvyi Rih, US stocks entering correction on AI sell-off).
-3. Wrote render.py (Pillow + DejaVu fonts) which renders the infographic "THE WORLD TODAY — WORLD NEWS, Sunday 22 November 2026" as a 1024x1024 PNG.
-4. Ran render.py to produce news.png (1024x1024 PNG, 111,132 bytes, under the 1 MiB limit) and visually checked it: all text fits inside its panels, nothing clipped.
-5. Wrote main.py: the entry program, which copies news.png to /output/entry.png with no network access.
-6. Verified main.py by running it twice: both runs wrote byte-identical output (SHA-256 1efd54be…dcf88), 1024x1024 PNG, 111,132 bytes.
-7. Added LICENSE (MIT, OSI-approved) and README.md explaining the entry and the submission checklist.
-8. Created the public GitHub repo ahmad-qr/makefun-news-image-20261122 and uploaded all 5 files (LICENSE, README.md, main.py, news.png, render.py) in a single commit.
+## Note
 
-## Note on this transcript
-
-This transcript was written after the build from the agent's own work log. It is a handed-over session transcript (the build was done by an AI agent and handed to the account owner for submission), not a live makefun CLI bundle.
+This transcript was written in the same session that built the entry, from the session's own work. It documents a from-scratch rebuild done because the earlier v1 files could not be reused.

@@ -1,37 +1,51 @@
 #!/usr/bin/env python3
-"""Entry program for the make.fun bounty
-"Sum up 22 November's world news in one image"
-(https://make.fun/bounty/news-image-20261122).
+"""Entry program for make.fun bounty news-image-20261122.
 
-Writes one image to /output/entry.png: a 1024x1024 PNG summarising
-the world news of Sunday 22 November 2026 in six stories
-(COP31 overtime, Iran strikes Bahrain, cartel boss captured in Mexico,
-Trump-Xi-Putin meeting in Shenzhen, missile on Kryvyi Rih, US stocks
-slide into correction).
-
-The image is bundled in this repository as news.png (rendered by
-render.py from the verified headlines of the day). This program only
-copies those exact bytes to /output/entry.png, so it needs no network
-and two runs write identical bytes.
+Copies the pre-rendered infographic news.png to /output/entry.png.
+No network access, no randomness: every run writes identical bytes.
+Run:  python3 main.py
 """
-import os
+
+import hashlib
 import shutil
 import sys
+from pathlib import Path
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, "news.png")
-DST = "/output/entry.png"
+HERE = Path(__file__).resolve().parent
+
+
+def sha256_of(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def fail(message):
+    print(f"error: {message}", file=sys.stderr)
+    raise SystemExit(1)
 
 
 def main():
-    if not os.path.isfile(SRC):
-        print(f"missing bundled image: {SRC}", file=sys.stderr)
-        return 1
-    os.makedirs(os.path.dirname(DST), exist_ok=True)
-    shutil.copyfile(SRC, DST)
-    print(f"wrote {DST} ({os.path.getsize(DST)} bytes)")
-    return 0
+    src = HERE / "news.png"
+    dst = Path("/output/entry.png")
+    if not src.is_file():
+        fail(f"source image missing: {src}")
+    if src.stat().st_size == 0:
+        fail(f"source image is empty: {src}")
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, dst)
+    if not dst.is_file() or dst.stat().st_size == 0:
+        fail(f"output was not written: {dst}")
+    if dst.stat().st_size != src.stat().st_size:
+        fail(
+            f"output size {dst.stat().st_size} does not match "
+            f"source size {src.stat().st_size}"
+        )
+    print(f"Wrote {dst} ({dst.stat().st_size} bytes, "
+          f"sha256 {sha256_of(dst)})")
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
